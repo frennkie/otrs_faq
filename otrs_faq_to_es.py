@@ -90,7 +90,7 @@ try:
                 faq_attachment_dict.update({"filename": faq_attachment['filename']}),
                 faq_attachment_dict.update({"content_type": faq_attachment['content_type']}),
                 faq_attachment_dict.update({"content_size": faq_attachment['content_size']}),
-                #faq_attachment_dict.update(parser.from_buffer(faq_attachment['content']))
+                faq_attachment_dict.update(parser.from_buffer(faq_attachment['content']))
                 faq_attachments.append(faq_attachment_dict)
             faq_object.update({"attachments": faq_attachments})
 
@@ -107,52 +107,65 @@ print("### remove any existing indexes ###")
 es.indices.delete(index='faqs', ignore=[400, 404])
 
 print("### create index with settings and mapping ###")
-ic.create(index='faqs', body={
+ic.create(index='faqs', body=
+{
+    "mappings": {
+        "faq": {
+            "dynamic_templates": [
+                {
+                    "default_for_all": {
+                        "mapping": {
+                            "fields": {
+                                "de": {
+                                    "analyzer": "german",
+                                    "type": "text"
+                                },
+                                "en": {
+                                    "analyzer": "english",
+                                    "type": "text"
+                                },
+                                "raw": {
+                                    "analyzer": "standard",
+                                    "type": "text"
+                                },
+                                "keyword": {
+                                    "ignore_above": 50,
+                                    "type": "keyword"
+                                }
+                            },
+                            "type": "text",
+                            "analyzer": "trigrams"
+                        },
+                        "match": "*",
+                        "match_mapping_type": "string"
+                    }
+                }
+            ]
+        }
+    },
     "settings": {
         "analysis": {
-            "filter": {
-                "trigrams_filter": {
-                    "type":     "ngram",
-                    "min_gram": 3,
-                    "max_gram": 3
-                }
-            },
             "analyzer": {
                 "trigrams": {
-                    "type":      "custom",
-                    "tokenizer": "standard",
-                    "filter":   [
+                    "filter": [
                         "lowercase",
                         "trigrams_filter"
-                    ]
+                    ],
+                    "tokenizer": "standard",
+                    "type": "custom"
+                }
+            },
+            "filter": {
+                "trigrams_filter": {
+                    "max_gram": 3,
+                    "min_gram": 3,
+                    "type": "ngram"
                 }
             }
         }
-    },
-    "mappings": {
-        "faq": {
-            "properties": {
-                "subject": {
-                    "type":     "text",
-                    "fields": {
-                        "trigrams": {
-                          "type": "text",
-                          "analyzer": "trigrams"
-                        },
-                        "de": {
-                          "type":     "text",
-                          "analyzer": "german"
-                        },
-                        "en": {
-                          "type":     "text",
-                          "analyzer": "english"
-                        }
-                    }
-               }
-           }
-        }
     }
-})
+}
+)
 
 
 print("### build new index ###")
