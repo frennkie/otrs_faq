@@ -44,16 +44,19 @@ systemctl status tika
 ```
 
 
-
-rpm -ivh elasticsearch-1.7.3.noarch.rpm
-
+rpm -ivh elasticsearch-5.1.2.rpm
 
 
-Libs
+Libs (Python3)
 
-* elasticsearch
+* PyMySQL
 * tika
+* elasticsearch
+* + dependencies of that packages
 
 ```
-pip install elasticsearch tika
+pip3 install elasticsearch PyMySQL tika
 ```
+
+
+

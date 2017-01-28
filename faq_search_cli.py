@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from elasticsearch import Elasticsearch, RequestsHttpConnection, serializer, compat, exceptions
+from elasticsearch import Elasticsearch
 import config
 import json
 import sys
@@ -31,6 +31,9 @@ import argparse
 __version_info__ = ('0', '1', '1')
 __version__ = '.'.join(__version_info__)
 
+if sys.version_info <= (3, 2):
+    sys.stdout.write("Sorry, requires Python >3.2, not Python 2.x\n")
+    sys.exit(1)
 
 SUBJECT = ["subject"]
 FIELDS = ["field1", "field2", "field3", "field4", "field5", "field6"]
@@ -39,10 +42,6 @@ ATTACHMENTS = ["attachments.content"]
 SUBJECT_EXACT = ["subject.raw"]
 FIELDS_EXACT = ["field1.raw", "field2.raw", "field3.raw", "field4.raw", "field5.raw", "field6.raw"]
 ATTACHMENTS_EXACT = ["attachments.content.raw"]
-
-if sys.version_info <= (3, 2):
-    sys.stdout.write("Sorry, requires Python 3.x, not Python 2.x\n")
-    sys.exit(1)
 
 
 def main():
@@ -60,26 +59,32 @@ def main():
                         help="what to search for",
                         action="store")
 
-    parser.add_argument("--fuzzy",
-                        help="do fuzzy search instead of exact word matches",
+    parser.add_argument("-d", "--disable-exact",
+                        help="disable exact word matching",
                         action="store_true")
 
-    parser.add_argument("--exclude-subject",
-                        help="iexclude subject line",
+    parser.add_argument("-f", "--fuzzy",
+                        help="enable fuzzy (typo) matching (default: 0)",
+                        type=str, choices=['AUTO', '0', '1', '2'],
+                        default="0", action="store")
+
+    parser.add_argument("-s", "--exclude-subject",
+                        help="exclude subject line",
                         action="store_true")
 
-    parser.add_argument("--exclude-body",
+    parser.add_argument("-b", "--exclude-body",
                         help="exclude FAQ body fields",
                         action="store_true")
 
-    parser.add_argument("--include-attachments",
+    parser.add_argument("-a", "--include-attachments",
                         help="include attachments",
                         action="store_true")
 
     args = parser.parse_args()
 
     search_fields = list()
-    if args.fuzzy:
+
+    if args.disable_exact:
         if not args.exclude_subject:
             search_fields += SUBJECT
         if not args.exclude_body:
@@ -94,22 +99,37 @@ def main():
         if args.include_attachments:
             search_fields += ATTACHMENTS_EXACT
 
-    print("Searching for \"{0}\" in {1}".format(args.pattern, ",".join(search_fields)))
+    if args.verbose:
+        print("Searching for \"{0}\" in {1}".format(args.pattern, ",".join(search_fields)))
 
     es = Elasticsearch()
 
-    res = es.search(index="faqs", body={
-        "query": {
-            "multi_match": {
-                "query": args.pattern,
-                "operator": "and",
-                "fields": search_fields
+    if args.fuzzy:
+        res = es.search(index="faqs", body={
+            "query": {
+                "multi_match": {
+                    "query": args.pattern,
+                    "fuzziness": args.fuzzy,
+                    "operator": "and",
+                    "fields": search_fields
+                }
             }
-        }
-    })
+        })
+    else:
+        res = es.search(index="faqs", body={
+            "query": {
+                "multi_match": {
+                    "query": args.pattern,
+                    "operator": "and",
+                    "fields": search_fields
+                }
+            }
+        })
 
     for hit in res['hits']['hits']:
-        print(u"{0}: (Score: {1}) {2}".format(hit["_id"], hit["_score"], hit["_source"]["subject"]))
+        print(u"{0} - Score: {1:.3f}: {2}".format(hit["_id"], hit["_score"], hit["_source"]["subject"]))
+
+    print("\n")
 
 if __name__ == "__main__":
     main()
