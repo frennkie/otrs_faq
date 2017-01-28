@@ -60,17 +60,21 @@ try:
             faq_object.update({"faq_id": faq['id']})
 
             # get FAQ details
-            sql = """SELECT i.f_name, i.f_language_id, i.f_subject as subject, i.created, i.created_by, i.changed,
-                        i.changed_by, i.category_id, i.state_id, c.name, s.name, l.name, i.f_keywords as keywords,
-                        i.approved, i.valid_id, i.content_type, i.f_number, st.id, st.name,
+#            sql = """SELECT i.f_name, i.f_language_id, i.f_subject as subject, i.created, i.created_by, i.changed,
+#                        i.changed_by, i.category_id, i.state_id, c.name, s.name, l.name, i.f_keywords as keywords,
+#                        i.approved, i.valid_id, i.content_type, i.f_number, st.id, st.name,
+#                        i.f_field1 as field1, i.f_field2 as field2, i.f_field3 as field3,
+#                        i.f_field4 as field4, i.f_field5 as field5, i.f_field6 as field6
+#                    FROM faq_item i, faq_category c, faq_state s, faq_state_type st, faq_language l
+#                    WHERE i.state_id = s.id
+#                        AND s.type_id = st.id
+#                        AND i.category_id = c.id
+#                        AND i.f_language_id = l.id
+            sql = """SELECT i.f_subject as subject, i.f_keywords as keywords,
                         i.f_field1 as field1, i.f_field2 as field2, i.f_field3 as field3,
                         i.f_field4 as field4, i.f_field5 as field5, i.f_field6 as field6
-                    FROM faq_item i, faq_category c, faq_state s, faq_state_type st, faq_language l
-                    WHERE i.state_id = s.id
-                        AND s.type_id = st.id
-                        AND i.category_id = c.id
-                        AND i.f_language_id = l.id
-                        AND i.id = {0}""".format(faq['id'])
+                    FROM faq_item i
+                    WHERE i.id = {0}""".format(faq['id'])
             cur.execute(sql)
 
             faq_object.update(cur.fetchone())
@@ -86,7 +90,7 @@ try:
                 faq_attachment_dict.update({"filename": faq_attachment['filename']}),
                 faq_attachment_dict.update({"content_type": faq_attachment['content_type']}),
                 faq_attachment_dict.update({"content_size": faq_attachment['content_size']}),
-                faq_attachment_dict.update(parser.from_buffer(faq_attachment['content']))
+                #faq_attachment_dict.update(parser.from_buffer(faq_attachment['content']))
                 faq_attachments.append(faq_attachment_dict)
             faq_object.update({"attachments": faq_attachments})
 
@@ -97,8 +101,63 @@ finally:
 
 # Open Elasticsearch connection and input data
 es = elasticsearch.Elasticsearch()  # use default of localhost, port 9200
+ic = elasticsearch.client.IndicesClient(es)
 
+print("### remove any existing indexes ###")
+es.indices.delete(index='faqs', ignore=[400, 404])
+
+print("### create index with settings and mapping ###")
+ic.create(index='faqs', body={
+    "settings": {
+        "analysis": {
+            "filter": {
+                "trigrams_filter": {
+                    "type":     "ngram",
+                    "min_gram": 3,
+                    "max_gram": 3
+                }
+            },
+            "analyzer": {
+                "trigrams": {
+                    "type":      "custom",
+                    "tokenizer": "standard",
+                    "filter":   [
+                        "lowercase",
+                        "trigrams_filter"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "faq": {
+            "properties": {
+                "subject": {
+                    "type":     "text",
+                    "fields": {
+                        "trigrams": {
+                          "type": "text",
+                          "analyzer": "trigrams"
+                        },
+                        "de": {
+                          "type":     "text",
+                          "analyzer": "german"
+                        },
+                        "en": {
+                          "type":     "text",
+                          "analyzer": "english"
+                        }
+                    }
+               }
+           }
+        }
+    }
+})
+
+
+print("### build new index ###")
 for item in faq_object_list:
     es.index(index='faqs', doc_type='faq', id=item['faq_id'], body=item)
+
 
 # EOF
