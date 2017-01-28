@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright 2017 frennkie (https:/github.com/frennkie)
@@ -27,6 +27,7 @@ from __future__ import unicode_literals
 from elasticsearch import Elasticsearch, RequestsHttpConnection, serializer, compat, exceptions
 import config
 import json
+import sys
 import argparse
 
 ### Versioning
@@ -42,21 +43,11 @@ SUBJECT_EXACT = ["subject.raw"]
 FIELDS_EXACT = ["field1.raw", "field2.raw", "field3.raw", "field4.raw", "field5.raw", "field6.raw"]
 ATTACHMENTS_EXACT = ["attachments.content.raw"]
 
-#class JSONSerializerPython2(serializer.JSONSerializer):
-#    """Override elasticsearch library serializer to ensure it encodes utf characters during json dump.
-#    See original at: https://github.com/elastic/elasticsearch-py/blob/master/elasticsearch/serializer.py#L42
-#    A description of how ensure_ascii encodes unicode characters to ensure they can be sent across the wire
-#    as ascii can be found here: https://docs.python.org/2/library/json.html#basic-usage
-#    """
-#    def dumps(self, data):
-#        # don't serialize strings
-#        if isinstance(data, compat.string_types):
-#            return data
-#        try:
-#            return json.dumps(data, default=self.default, ensure_ascii=True)
-#        except (ValueError, TypeError) as e:
-#            raise exceptions.SerializationError(data, e)
-#
+if sys.version_info <= (3, 2):
+    sys.stdout.write("Sorry, requires Python 3.x, not Python 2.x\n")
+    sys.exit(1)
+
+
 def main():
 
     ### set up command line argument parsing
@@ -108,8 +99,6 @@ def main():
 
     print("Searching for \"{0}\" in {1}".format(args.pattern, ",".join(search_fields)))
 
-    # Python2
-    #es = Elasticsearch(serializer=JSONSerializerPython2())
     es = Elasticsearch()
 
     res = es.search(index="faqs", body={
