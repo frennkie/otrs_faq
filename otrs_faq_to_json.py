@@ -1,0 +1,88 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function
+from __future__ import unicode_literals
+
+import pymysql.cursors
+import pymysql
+import tika
+from tika import parser
+import elasticsearch
+import config
+
+# Connect to the database
+connection = pymysql.connect(host=config.MYSQL_HOST,
+                             user=config.MYSQL_USER,
+                             password=config.MYSQL_PASS,
+                             db=config.MYSQL_DB,
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+
+faq_object_list = list()
+
+try:
+    with connection.cursor() as cur:
+        # Create a new record
+        sql = """SELECT DISTINCT(faq_item.id)
+                    FROM faq_item
+                    ORDER BY id ASC"""
+        cur.execute(sql)
+
+    # sample for unique_faq_ids: [{u'id': 1}, {u'id': 2}, {u'id': 3}]
+    unique_faq_ids = list(cur.fetchall())
+
+    with connection.cursor() as cur:
+        for faq in unique_faq_ids:
+            print("### Working on FAQ #{0} ###".format(faq['id']))
+            # instantiate new clean dict
+            faq_object = dict()
+            faq_object.update({"faq_id": faq['id']})
+
+            # get FAQ details
+            sql = """SELECT i.f_name, i.f_language_id, i.f_subject as subject, i.created, i.created_by, i.changed,
+                        i.changed_by, i.category_id, i.state_id, c.name, s.name, l.name, i.f_keywords as keywords,
+                        i.approved, i.valid_id, i.content_type, i.f_number, st.id, st.name,
+                        i.f_field1 as field1, i.f_field2 as field2, i.f_field3 as field3,
+                        i.f_field4 as field4, i.f_field5 as field5, i.f_field6 as field6
+                    FROM faq_item i, faq_category c, faq_state s, faq_state_type st, faq_language l
+                    WHERE i.state_id = s.id
+                        AND s.type_id = st.id
+                        AND i.category_id = c.id
+                        AND i.f_language_id = l.id
+                        AND i.id = {0}""".format(faq['id'])
+            cur.execute(sql)
+
+            faq_object.update(cur.fetchone())
+
+            sql = """SELECT filename, content_type, content_size, content
+                         FROM faq_attachment
+                         WHERE faq_id = {0}""".format(faq['id'])
+            cur.execute(sql)
+
+            faq_attachments = list()
+            for faq_attachment in cur.fetchall():
+                faq_attachment_dict = dict()
+                faq_attachment_dict.update({"filename": faq_attachment['filename']}),
+                faq_attachment_dict.update({"content_type": faq_attachment['content_type']}),
+                faq_attachment_dict.update({"content_size": faq_attachment['content_size']}),
+                faq_attachment_dict.update(parser.from_buffer(faq_attachment['content']))
+                faq_attachments.append(faq_attachment_dict)
+            faq_object.update({"attachments": faq_attachments})
+
+            faq_object_list.append(faq_object)
+
+    # When doing insert/update: connection is not autocommited by default.
+    # So you must commit to save your changes.
+    # connection.commit()
+
+finally:
+    connection.close()
+
+# Open Elasticsearch connection and input data
+es = elasticsearch.Elasticsearch()  # use default of localhost, port 9200
+
+for item in faq_object_list:
+    es.index(index='faqs', doc_type='faq', id=item['faq_id'], body=item)
+
+# EOF
