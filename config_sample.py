@@ -13,7 +13,7 @@ ES_PORT = 9200
 ES_USER = None
 ES_PASS = None
 # ES SSL/TLS Settings
-ES_USE_SSL = True
+ES_USE_SSL = True  # this setting is ignored.. if USER + PASS is provided then SSL will be used
 ES_VERIFY_CERTS = True
 if platform_distro in ["centos", "rhel"]:
     ES_CA_CERTS = "/etc/pki/tls/certs/ca-bundle.crt"
