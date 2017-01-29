@@ -74,15 +74,15 @@ try:
                         i.f_field1 as field1, i.f_field2 as field2, i.f_field3 as field3,
                         i.f_field4 as field4, i.f_field5 as field5, i.f_field6 as field6
                     FROM faq_item i
-                    WHERE i.id = {0}""".format(faq['id'])
-            cur.execute(sql)
+                    WHERE i.id = %(faq_id)s"""
+            cur.execute(sql, {"faq_id": faq['id']})
 
             faq_object.update(cur.fetchone())
 
             sql = """SELECT filename, content_type, content_size, content
                          FROM faq_attachment
-                         WHERE faq_id = {0}""".format(faq['id'])
-            cur.execute(sql)
+                         WHERE faq_id = %(faq_id)s"""
+            cur.execute(sql, {"faq_id": faq['id']})
 
             faq_attachments = list()
             for faq_attachment in cur.fetchall():
