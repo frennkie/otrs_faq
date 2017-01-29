@@ -30,6 +30,8 @@ import tika
 from tika import parser
 import elasticsearch
 import config
+# import certifi  # could also be used for SSL/TLS verification
+
 
 # Connect to the database
 connection = pymysql.connect(host=config.MYSQL_HOST,
@@ -100,77 +102,31 @@ finally:
     connection.close()
 
 # Open Elasticsearch connection and input data
-es = elasticsearch.Elasticsearch()  # use default of localhost, port 9200
+if config.ES_USER and config.ES_PASS:
+    es = elasticsearch.Elasticsearch([config.ES_HOST],
+                                     http_auth=(ES_USER, ES_PORT),
+                                     port=config.ES_PORT,
+                                     use_ssl=config.ES_USE_SSL,
+                                     ca_certs=config.CA_CERTS)
+else:
+    es = elasticsearch.Elasticsearch([config.ES_HOST], port=config.ES_PORT)
+
 ic = elasticsearch.client.IndicesClient(es)
 
 print("### remove any existing indexes ###")
-es.indices.delete(index='faqs', ignore=[400, 404])
+es.indices.delete(index=config.ES_INDEX, ignore=[400, 404])
+
+with open(config.ES_INDEX_SETTING_MAPPING_FILE, 'r') as f:
+    es_index_setting_mapping = f.read()
+
 
 print("### create index with settings and mapping ###")
-ic.create(index='faqs', body=
-{
-    "mappings": {
-        "faq": {
-            "dynamic_templates": [
-                {
-                    "default_for_all": {
-                        "mapping": {
-                            "fields": {
-                                "de": {
-                                    "analyzer": "german",
-                                    "type": "text"
-                                },
-                                "en": {
-                                    "analyzer": "english",
-                                    "type": "text"
-                                },
-                                "raw": {
-                                    "analyzer": "standard",
-                                    "type": "text"
-                                },
-                                "keyword": {
-                                    "ignore_above": 50,
-                                    "type": "keyword"
-                                }
-                            },
-                            "type": "text",
-                            "analyzer": "trigrams"
-                        },
-                        "match": "*",
-                        "match_mapping_type": "string"
-                    }
-                }
-            ]
-        }
-    },
-    "settings": {
-        "analysis": {
-            "analyzer": {
-                "trigrams": {
-                    "filter": [
-                        "lowercase",
-                        "trigrams_filter"
-                    ],
-                    "tokenizer": "standard",
-                    "type": "custom"
-                }
-            },
-            "filter": {
-                "trigrams_filter": {
-                    "max_gram": 3,
-                    "min_gram": 3,
-                    "type": "ngram"
-                }
-            }
-        }
-    }
-}
-)
+ic.create(index=config.ES_INDEX, body=es_index_setting_mapping)
 
 
 print("### build new index ###")
 for item in faq_object_list:
-    es.index(index='faqs', doc_type='faq', id=item['faq_id'], body=item)
+    es.index(index=config.ES_INDEX, doc_type=config.ES_DOC_TYPE, id=item['faq_id'], body=item)
 
 
 # EOF

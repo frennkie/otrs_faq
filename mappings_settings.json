@@ -1,0 +1,57 @@
+{
+    "mappings": {
+        "faq": {
+            "dynamic_templates": [
+                {
+                    "default_for_all": {
+                        "mapping": {
+                            "fields": {
+                                "de": {
+                                    "analyzer": "german",
+                                    "type": "text"
+                                },
+                                "en": {
+                                    "analyzer": "english",
+                                    "type": "text"
+                                },
+                                "raw": {
+                                    "analyzer": "standard",
+                                    "type": "text"
+                                },
+                                "keyword": {
+                                    "ignore_above": 50,
+                                    "type": "keyword"
+                                }
+                            },
+                            "type": "text",
+                            "analyzer": "trigrams"
+                        },
+                        "match": "*",
+                        "match_mapping_type": "string"
+                    }
+                }
+            ]
+        }
+    },
+    "settings": {
+        "analysis": {
+            "analyzer": {
+                "trigrams": {
+                    "filter": [
+                        "lowercase",
+                        "trigrams_filter"
+                    ],
+                    "tokenizer": "standard",
+                    "type": "custom"
+                }
+            },
+            "filter": {
+                "trigrams_filter": {
+                    "max_gram": 3,
+                    "min_gram": 3,
+                    "type": "ngram"
+                }
+            }
+        }
+    }
+}
