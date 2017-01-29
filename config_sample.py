@@ -14,6 +14,7 @@ ES_USER = None
 ES_PASS = None
 # ES SSL/TLS Settings
 ES_USE_SSL = True
+ES_VERIFY_CERTS = True
 if platform_distro in ["centos", "rhel"]:
     ES_CA_CERTS = "/etc/pki/tls/certs/ca-bundle.crt"
 elif platform_distro in ["ubuntu", "debian"]:

@@ -104,10 +104,10 @@ finally:
 # Open Elasticsearch connection and input data
 if config.ES_USER and config.ES_PASS:
     es = elasticsearch.Elasticsearch([config.ES_HOST],
-                                     http_auth=(ES_USER, ES_PORT),
+                                     http_auth=(config.ES_USER, config.ES_PASS),
                                      port=config.ES_PORT,
                                      use_ssl=config.ES_USE_SSL,
-                                     ca_certs=config.CA_CERTS)
+                                     ca_certs=config.ES_CA_CERTS)
 else:
     es = elasticsearch.Elasticsearch([config.ES_HOST], port=config.ES_PORT)
 
