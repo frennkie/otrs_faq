@@ -146,7 +146,8 @@ sudo openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -keyout server.example
 
 ```
 sudo htpasswd -c /etc/nginx/.htpasswd username
-sudo chmod 640 /etc/nginx/.htpasswd
+sudo chmod 600 /etc/nginx/.htpasswd
+sudo chown www-data /etc/nginx/.htpasswd
 ```
 
 #### ES reverse Proxy + elasticsearch-HQ
