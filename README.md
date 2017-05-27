@@ -308,7 +308,7 @@ Type=simple
 WantedBy=multi-user.target
 ```
 
-#### Tika Upstart (Ubuntu 14.4) start script
+#### Tika Upstart (Ubuntu < 15.10) start script
 
 `sudo vi /etc/init/tika.conf`
 
