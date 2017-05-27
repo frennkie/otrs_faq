@@ -1,18 +1,12 @@
 # OTRS FAQ to Elasticsearch
 
-## Requirements
+### Requirements
 
 non Python Software:
 
 * Java 8
 * Apache Tika Server
 * Elasticsearch
-
-https://www.unixmen.com/install-oracle-java-jdk-8-centos-76-56-4/
-
-
-`rpm -ivh elasticsearch-5.1.2.rpm`
-
 
 Libs (Python3)
 
@@ -21,12 +15,15 @@ Libs (Python3)
 * elasticsearch
 * + dependencies of that packages
 
+### Install Python3 requirements
+
 ```
 pip3 install elasticsearch PyMySQL tika
 ```
 
+### Setup Elasticsearch
 
-### Install ES on Ubuntu
+#### Install ES on Ubuntu
 
 https://www.digitalocean.com/community/tutorials/how-to-set-up-a-production-elasticsearch-cluster-on-ubuntu-14-04
 
@@ -46,7 +43,7 @@ sudo apt-get update
 sudo apt-get install elasticsearch
 ```
 
-### Configure Es
+#### Configure Es
 
 `sudo vi /etc/elasticsearch/elasticsearch.yml`
 
@@ -56,7 +53,9 @@ sudo apt-get install elasticsearch
 * network.host: 127.0.0.1
 * http.port: 9200
 
-### Install nginx as reverse proxy for ES, Kibana and to host elasticsearch-HQ
+### Setup NGINX
+
+#### Install nginx as reverse proxy for ES, Kibana and to host elasticsearch-HQ
 
 Secure nginx config reference: https://gist.github.com/plentz/6737338
 
@@ -103,7 +102,7 @@ DNS.1 = server.example.com
 IP.2 = 192.168.0.20
 ```
 
-# create certificate
+create certificate
 
 ```
 sudo openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -keyout server.example.com.key -out server.example.com.pem -config req.conf -extensions 'v3_req'
@@ -181,7 +180,7 @@ server {
 
 
 
-### Install HQ "Plugin
+### Setup HQ "Plugin
 
 ```
 cd /tmp
@@ -192,7 +191,7 @@ cp -a /tmp/elasticsearch-HQ-master/ /var/www/html/otrs-es/elasticsearch-HQ
 chown -R www-data:www-data /var/www/html/otrs-es/elasticsearch-HQ
 ```
 
-### Install Kibana
+### Detup Kibana
 
 https://www.elastic.co/guide/en/kibana/current/deb.html
 
@@ -263,7 +262,7 @@ server {
 `sudo ln -s /etc/nginx/sites-available/kibana.conf /etc/nginx/sites-enabled`
 
 
-### Install Tika
+### Setup Tika
 
 `wget http://www-eu.apache.org/dist/tika/tika-server-1.14.jar`
 
