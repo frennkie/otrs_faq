@@ -263,7 +263,6 @@ server {
         proxy_read_timeout 90;
     }
 }
-
 ```
 
 `sudo ln -s /etc/nginx/sites-available/kibana.conf /etc/nginx/sites-enabled`
@@ -362,7 +361,6 @@ location / {
         proxy_read_timeout 90;
     }
 }
-
 ```
 
 `sudo ln -s /etc/nginx/sites-available/tika.conf /etc/nginx/sites-enabled`
