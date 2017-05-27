@@ -218,10 +218,10 @@ server {
 
 ```
 cd /tmp
-wget https://github.com/royrusso/elasticsearch-HQ/archive/v2.0.3.zip
-unzip /tmp/v2.0.3.zip 
+wget https://github.com/royrusso/elasticsearch-HQ/archive/master.zip
+unzip /tmp/master.zip
 mkdir /var/www/html/otrs-es
-cp -a /tmp/elasticsearch-HQ-2.0.3/ /var/www/html/otrs-es/elasticsearch-HQ
+cp -a /tmp/elasticsearch-HQ-master/ /var/www/html/otrs-es/elasticsearch-HQ
 chown -R www-data:www-data /var/www/html/otrs-es/elasticsearch-HQ
 ```
 
