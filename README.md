@@ -103,8 +103,8 @@ sudo apt-get install nginx
 #### dhparam.pem file
 
 ``` 
-mkdir /etc/nginx/ssl
-openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
+sudo mkdir /etc/nginx/ssl
+sudo openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
 ```
 
 #### optional: create self signed cert
@@ -113,7 +113,7 @@ openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
 cd /etc/nginx/ssl
 ```
 
-`vi create req.conf`
+`vi req.conf`
 
 ```
 [req]
