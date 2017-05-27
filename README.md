@@ -112,8 +112,6 @@ server {
     listen *:8443;
     server_name otrs-dev.home.rhab.de;
 
-    root /var/www/html/otrs-es;
-
     access_log /var/log/nginx/otrs_kibana.access.log;
     error_log /var/log/nginx/otrs_kibana.error.log;
 
