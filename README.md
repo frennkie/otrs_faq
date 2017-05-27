@@ -59,7 +59,7 @@ sudo apt-get install elasticsearch
 
 > Nginx [...] is a web server, which can also be used as a reverse proxy, load balancer and HTTP cache. (https://en.wikipedia.org/wiki/Nginx)
 
-#### Install nginx as reverse proxy for ES, Kibana and to host elasticsearch-HQ
+#### Install nginx as reverse proxy for ES, Kibana, Tika and to host elasticsearch-HQ
 
 Secure nginx config reference: https://gist.github.com/plentz/6737338
 
