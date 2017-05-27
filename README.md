@@ -220,7 +220,7 @@ server {
 
 ```
 
-### Install HQ "Pluging"
+### Install HQ "Plugin
 
 ```
 wget https://github.com/royrusso/elasticsearch-HQ/archive/v2.0.3.zip -o /tmp/v2.0.3.zip
