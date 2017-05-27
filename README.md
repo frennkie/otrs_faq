@@ -59,6 +59,13 @@ pip3 install elasticsearch PyMySQL tika
 ```
 
 
+### Install ES on Ubuntu
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-a-production-elasticsearch-cluster-on-ubuntu-14-04
+
+
+
+
 
 ### Install nginx as reverse proxy for ES, Kibana and to host elasticsearch-HQ
 
