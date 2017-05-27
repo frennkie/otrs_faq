@@ -209,6 +209,8 @@ server {
 }
 ```
 
+`sudo ln -s /etc/nginx/sites-available/elasticsearch.conf /etc/nginx/sites-enabled`
+
 **/etc/nginx/sites-available/kibana.conf**
 
 ```
@@ -253,6 +255,8 @@ server {
 }
 
 ```
+
+`sudo ln -s /etc/nginx/sites-available/kibana.conf /etc/nginx/sites-enabled`
 
 ### Install HQ "Plugin
 
