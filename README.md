@@ -22,7 +22,7 @@ pip3 install elasticsearch PyMySQL tika
 
 ## Elasticsearch
 
-Elasticsearch is a search engine based on Lucene. It provides a distributed, multitenant-capable full-text search engine with an HTTP web interface and schema-free JSON documents. (https://en.wikipedia.org/wiki/Elasticsearch)
+> Elasticsearch is a search engine based on Lucene. It provides a distributed, multitenant-capable full-text search engine with an HTTP web interface and schema-free JSON documents. (https://en.wikipedia.org/wiki/Elasticsearch)
 
 #### Install ES on Ubuntu
 
@@ -56,7 +56,7 @@ sudo apt-get install elasticsearch
 
 ## Setup NGINX
 
-Nginx [...] is a web server, which can also be used as a reverse proxy, load balancer and HTTP cache. (https://en.wikipedia.org/wiki/Nginx)
+> Nginx [...] is a web server, which can also be used as a reverse proxy, load balancer and HTTP cache. (https://en.wikipedia.org/wiki/Nginx)
 
 #### Install nginx as reverse proxy for ES, Kibana and to host elasticsearch-HQ
 
@@ -185,7 +185,7 @@ server {
 
 ## Setup HQ "Plugin
 
-Monitoring and Management Web Application for ElasticSearch instances and clusters. (https://github.com/royrusso/elasticsearch-HQ)
+> Monitoring and Management Web Application for ElasticSearch instances and clusters. (https://github.com/royrusso/elasticsearch-HQ)
 
 ```
 cd /tmp
