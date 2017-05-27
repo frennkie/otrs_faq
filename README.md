@@ -111,7 +111,8 @@ openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -keyout server.example.com.
 #### create basic auth user account
 
 ```
-htpasswd -c /etc/nginx/htpasswd username
+htpasswd -c /etc/nginx/.htpasswd username
+chmod 600 /etc/nginx/.htpasswd
 ```
 
 #### ES reverse Proxy + elasticsearch-HQ
@@ -152,7 +153,7 @@ server {
     #add_header Strict-Transport-Security max-age=15552000; # 180 days
 
     auth_basic           "OTRS ES";
-    auth_basic_user_file /etc/nginx/elasticsearch.pwd;
+    auth_basic_user_file /etc/nginx/.htpasswd;
 
     location /_plugin/hq/ {
         alias /var/www/html/otrs-es/elasticsearch-HQ/;
@@ -208,7 +209,7 @@ server {
     #add_header Strict-Transport-Security max-age=15552000; # 180 days
 
     auth_basic           "OTRS ES - Kibana";
-    auth_basic_user_file /etc/nginx/elasticsearch.pwd;
+    auth_basic_user_file /etc/nginx/.htpasswd;
 
     location / {
         # Send everything to the Elasticsearch endpoint
