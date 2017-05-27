@@ -83,7 +83,7 @@ sudo apt-get install elasticsearch
 
 `sudo vi /etc/elasticsearch/elasticsearch.yml`
 
-* cluster.name
+* cluster.name: otrs-es
 * node.name: ${HOSTNAME}
 * bootstrap.memory_lock: true
 * network.host: 127.0.0.1
