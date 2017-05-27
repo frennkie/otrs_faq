@@ -198,7 +198,7 @@ chown -R www-data:www-data /var/www/html/otrs-es/elasticsearch-HQ
 
 ## Setup Kibana
 
-Kibana is an open source data visualization plugin for Elasticsearch. It provides visualization capabilities on top of the content indexed on an Elasticsearch cluster. Users can create bar, line and scatter plots, or pie charts and maps on top of large volumes of data.[3] (https://en.wikipedia.org/wiki/Kibana)
+> Kibana is an open source data visualization plugin for Elasticsearch. It provides visualization capabilities on top of the content indexed on an Elasticsearch cluster. Users can create bar, line and scatter plots, or pie charts and maps on top of large volumes of data.[3] (https://en.wikipedia.org/wiki/Kibana)
 
 #### Install
 
