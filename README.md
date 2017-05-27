@@ -45,6 +45,12 @@ sudo apt-get update
 sudo apt-get install elasticsearch
 ```
 
+#### Autostart
+
+Upstart (Ubuntu < 15.10)
+
+`sudo update-rc.d elasticsearch defaults`
+
 #### Configure Es
 
 `sudo vi /etc/elasticsearch/elasticsearch.yml`
@@ -222,6 +228,12 @@ sudo apt-get install kibana
 ```
 service kibana start
 ```
+
+#### Autostart
+
+Upstart (Ubuntu < 15.10)
+
+`sudo update-rc.d kibana defaults`
 
 **/etc/nginx/sites-available/kibana.conf**
 
