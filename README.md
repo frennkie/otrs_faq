@@ -20,7 +20,7 @@ Libs (Python3)
 pip3 install elasticsearch PyMySQL tika
 ```
 
-### Setup Elasticsearch
+## Setup Elasticsearch
 
 #### Install ES on Ubuntu
 
@@ -52,7 +52,7 @@ sudo apt-get install elasticsearch
 * network.host: 127.0.0.1
 * http.port: 9200
 
-### Setup NGINX
+## Setup NGINX
 
 #### Install nginx as reverse proxy for ES, Kibana and to host elasticsearch-HQ
 
