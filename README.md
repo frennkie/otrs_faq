@@ -14,7 +14,7 @@ Libs (Python3)
 * tika
 * elasticsearch
 
-### Install Python3 requirements
+## Install Python3 requirements
 
 ```
 pip3 install elasticsearch PyMySQL tika
@@ -179,7 +179,7 @@ server {
 
 
 
-### Setup HQ "Plugin
+## Setup HQ "Plugin
 
 ```
 cd /tmp
@@ -190,7 +190,7 @@ cp -a /tmp/elasticsearch-HQ-master/ /var/www/html/otrs-es/elasticsearch-HQ
 chown -R www-data:www-data /var/www/html/otrs-es/elasticsearch-HQ
 ```
 
-### Detup Kibana
+## Setup Kibana
 
 https://www.elastic.co/guide/en/kibana/current/deb.html
 
@@ -261,7 +261,7 @@ server {
 `sudo ln -s /etc/nginx/sites-available/kibana.conf /etc/nginx/sites-enabled`
 
 
-### Setup Tika
+## Setup Tika
 
 `wget http://www-eu.apache.org/dist/tika/tika-server-1.14.jar`
 
