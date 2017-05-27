@@ -13,7 +13,6 @@ Libs (Python3)
 * PyMySQL
 * tika
 * elasticsearch
-* + dependencies of that packages
 
 ### Install Python3 requirements
 
