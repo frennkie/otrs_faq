@@ -65,8 +65,9 @@ pip3 install elasticsearch PyMySQL tika
 Secure nginx config reference: https://gist.github.com/plentz/6737338
 
 ```
-sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get -y dist-upgrade
 sudo apt-get install nginx
 ```
 
