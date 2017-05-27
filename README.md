@@ -97,7 +97,7 @@ Secure nginx config reference: https://gist.github.com/plentz/6737338
 sudo apt-get -y update
 sudo apt-get -y upgrade
 sudo apt-get -y dist-upgrade
-sudo apt-get install nginx
+sudo apt-get install nginx apache2-utils
 ```
 
 #### dhparam.pem file
@@ -139,19 +139,19 @@ IP.2 = 192.168.0.20
 # create certificate
 
 ```
-openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -keyout server.example.com.key -out server.example.com.pem -config req.conf -extensions 'v3_req'
+sudo openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -keyout server.example.com.key -out server.example.com.pem -config req.conf -extensions 'v3_req'
 ```
  
 #### create basic auth user account
 
 ```
-htpasswd -c /etc/nginx/.htpasswd username
-chmod 600 /etc/nginx/.htpasswd
+sudo htpasswd -c /etc/nginx/.htpasswd username
+sudo chmod 600 /etc/nginx/.htpasswd
 ```
 
 #### ES reverse Proxy + elasticsearch-HQ
 
-**elasticsearch.conf**
+**/etc/nginx/sites-available/elasticsearch.conf**
 
 ```
 server {
@@ -209,7 +209,7 @@ server {
 }
 ```
 
-**kibana.conf**
+**/etc/nginx/sites-available/kibana.conf**
 
 ```
 server {
