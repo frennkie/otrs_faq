@@ -60,9 +60,34 @@ pip3 install elasticsearch PyMySQL tika
 
 
 
-### Install NGINX as Reverse Proxy for ES, Kibana and to host elasticsearch-HQ
+### Install nginx as reverse proxy for ES, Kibana and to host elasticsearch-HQ
+
+Secure nginx config reference: https://gist.github.com/plentz/6737338
 
 sudo apt-get install ngingx
+
+#### dhparam.pem file
+
+``` 
+mkdir /etc/nginx/ssl
+openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
+```
+
+#### optional: create self signed cert
+
+```
+cd /etc/nginx/ssl
+openssl genrsa -out MyRootCA.key 2048
+openssl req -x509 -new -nodes -key MyRootCA.key -sha256 -days 1095 -out MyRootCA.pem
+
+# Generate client key & certificate signing request - fill out info
+# IMPORTANT: CN / Common Name should be the clients IP or FQDN
+openssl genrsa -out MyClient1.key 2048
+openssl req -new -key MyClient1.key -out MyClient1.csr
+
+# Generate client certificate based on our own CA certificate
+openssl x509 -req -in MyClient1.csr -CA MyRootCA.pem -CAkey MyRootCA.key -CAcreateserial -out MyClient1.pem -days 1095 -sha256
+```
 
 #### create basic auth user account
 
