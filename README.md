@@ -222,7 +222,7 @@ wget https://github.com/royrusso/elasticsearch-HQ/archive/v2.0.3.zip
 unzip /tmp/v2.0.3.zip 
 mkdir /var/www/html/otrs-es
 cp -a /tmp/elasticsearch-HQ-2.0.3/ /var/www/html/otrs-es/elasticsearch-HQ
-chown -R apache:apache /var/www/html/elasticsearch-HQ
+chown -R www-data:www-data /var/www/html/otrs-es/elasticsearch-HQ
 ```
 
 ### Install Kibana
