@@ -7,7 +7,7 @@ non Python Software:
 * Java 8
 * Apache Tika
 * Elasticsearch
-* ngingx
+* nginx
 
 Libs (Python3)
 
