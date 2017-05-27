@@ -165,7 +165,6 @@ server {
     }
 
     location / {
-        # Send everything to the Elasticsearch endpoint
         proxy_pass http://127.0.0.1:9200;
         proxy_read_timeout 90;
     }
@@ -260,7 +259,6 @@ server {
     auth_basic_user_file /etc/nginx/.htpasswd;
 
     location / {
-        # Send everything to the Elasticsearch endpoint
         proxy_pass http://127.0.0.1:5601;
         proxy_read_timeout 90;
     }
@@ -360,7 +358,6 @@ server {
     #add_header Strict-Transport-Security max-age=15552000; # 180 days
 
 location / {
-        # Send everything to the Elasticsearch endpoint
         proxy_pass http://127.0.0.1:9998;
         proxy_read_timeout 90;
     }
@@ -369,9 +366,3 @@ location / {
 ```
 
 `sudo ln -s /etc/nginx/sites-available/tika.conf /etc/nginx/sites-enabled`
-
-
-
-
-
-
