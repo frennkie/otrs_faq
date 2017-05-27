@@ -75,8 +75,19 @@ sudo apt-get -y install oracle-java8-installer
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 sudo apt-get install apt-transport-https
 echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
-sudo apt-get update && sudo apt-get install elasticsearch
+sudo apt-get update
+sudo apt-get install elasticsearch
 ```
+
+### Configure Es
+
+`sudo vi /etc/elasticsearch/elasticsearch.yml`
+
+* cluster.name
+* node.name: ${HOSTNAME}
+* bootstrap.memory_lock: true
+* network.host: 127.0.0.1
+* http.port: 9200
 
 ### Install nginx as reverse proxy for ES, Kibana and to host elasticsearch-HQ
 
