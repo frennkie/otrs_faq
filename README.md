@@ -79,7 +79,7 @@ openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
 cd /etc/nginx/ssl
 ```
 
-create req.conf
+`vi create req.conf`
 
 ```
 [req]
@@ -104,10 +104,10 @@ IP.2 = 192.168.0.20
 
 # create certificate
 
-`openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -keyout server.example.com.key -out server.example.com.pem -config req.conf -extensions 'v3_req'`
+```
+openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -keyout server.example.com.key -out server.example.com.pem -config req.conf -extensions 'v3_req'
+```
  
-
-
 #### create basic auth user account
 
 ```
