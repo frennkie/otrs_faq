@@ -92,7 +92,20 @@ try:
                 faq_attachment_dict.update({"filename": faq_attachment['filename']}),
                 faq_attachment_dict.update({"content_type": faq_attachment['content_type']}),
                 faq_attachment_dict.update({"content_size": faq_attachment['content_size']}),
-                faq_attachment_dict.update(parser.from_buffer(faq_attachment['content']))
+
+                # faq_attachment_dict.update(parser.from_buffer(faq_attachment['content'], 'http://192.168.92.77:9080/tika'))
+
+                parsed_dict = parser.from_buffer(faq_attachment['content'], 'http://192.168.92.77:9080/tika')
+
+                parsed_content = parsed_dict['content'].replace("-\n", "")
+                parsed_content = parsed_content.replace("\n\n", "")
+                parsed_content = parsed_content.replace("\n", " ")
+
+                parsed_dict.pop('content')
+                parsed_dict['content'] = parsed_content
+
+                faq_attachment_dict.update(parsed_dict)
+
                 faq_attachments.append(faq_attachment_dict)
             faq_object.update({"attachments": faq_attachments})
 
@@ -107,7 +120,8 @@ if config.ES_USER and config.ES_PASS:
                                      http_auth=(config.ES_USER, config.ES_PASS),
                                      port=config.ES_PORT,
                                      use_ssl=config.ES_USE_SSL,
-                                     ca_certs=config.ES_CA_CERTS)
+                                     verify_certs=False)
+    # ca_certs=config.ES_CA_CERTS)
 else:
     es = elasticsearch.Elasticsearch([config.ES_HOST], port=config.ES_PORT)
 
