@@ -28,4 +28,7 @@ ES_INDEX = "faqs"
 ES_DOC_TYPE = "faq"
 ES_INDEX_SETTING_MAPPING_FILE = "mappings_settings.json"
 
+# TIKA
+TIKA_URL = 'http://127.0.0.1:9998/tika'
+
 # EOF

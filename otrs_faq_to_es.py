@@ -95,7 +95,7 @@ try:
 
                 # faq_attachment_dict.update(parser.from_buffer(faq_attachment['content'], 'http://192.168.92.77:9080/tika'))
 
-                parsed_dict = parser.from_buffer(faq_attachment['content'], 'http://192.168.92.77:9080/tika')
+                parsed_dict = parser.from_buffer(faq_attachment['content'], config.TIKA_URL)
 
                 parsed_content = parsed_dict['content'].replace("-\n", "")
                 parsed_content = parsed_content.replace("\n\n", "")
