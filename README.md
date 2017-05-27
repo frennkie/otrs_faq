@@ -244,6 +244,10 @@ sudo apt-get update
 sudo apt-get install kibana
 ```
 
+```
+service kibana start
+```
+
 **/etc/nginx/sites-available/kibana.conf**
 
 ```
