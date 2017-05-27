@@ -63,9 +63,20 @@ pip3 install elasticsearch PyMySQL tika
 
 https://www.digitalocean.com/community/tutorials/how-to-set-up-a-production-elasticsearch-cluster-on-ubuntu-14-04
 
+https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html
 
+```
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get -y install oracle-java8-installer
+```
 
-
+```
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+sudo apt-get install apt-transport-https
+echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+sudo apt-get update && sudo apt-get install elasticsearch
+```
 
 ### Install nginx as reverse proxy for ES, Kibana and to host elasticsearch-HQ
 
