@@ -228,10 +228,17 @@ chown -R apache:apache /var/www/html/elasticsearch-HQ
 
 https://www.elastic.co/guide/en/kibana/current/deb.html
 
+Already done:
+
 ```
-wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-sudo apt-get install apt-transport-https
-echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+# wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+# sudo apt-get install apt-transport-https
+# echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+```
+
+Install
+
+```
 sudo apt-get update
 sudo apt-get install kibana
 ```
