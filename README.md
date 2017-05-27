@@ -212,6 +212,30 @@ server {
 
 `sudo ln -s /etc/nginx/sites-available/elasticsearch.conf /etc/nginx/sites-enabled`
 
+
+
+### Install HQ "Plugin
+
+```
+wget https://github.com/royrusso/elasticsearch-HQ/archive/v2.0.3.zip -o /tmp/v2.0.3.zip
+unzip -d /tmp /tmp/v2.0.3.zip 
+mkdir /var/www/html/otrs-es
+cp -a /tmp/royrusso-elasticsearch-HQ-eb117d4/var/www/html/otrs-es/elasticsearch-HQ
+chown -R apache:apache /var/www/html/elasticsearch-HQ
+```
+
+### Install Kibana
+
+https://www.elastic.co/guide/en/kibana/current/deb.html
+
+```
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+sudo apt-get install apt-transport-https
+echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+sudo apt-get update
+sudo apt-get install kibana
+```
+
 **/etc/nginx/sites-available/kibana.conf**
 
 ```
@@ -259,14 +283,6 @@ server {
 
 `sudo ln -s /etc/nginx/sites-available/kibana.conf /etc/nginx/sites-enabled`
 
-### Install HQ "Plugin
 
-```
-wget https://github.com/royrusso/elasticsearch-HQ/archive/v2.0.3.zip -o /tmp/v2.0.3.zip
-unzip -d /tmp /tmp/v2.0.3.zip 
-mkdir /var/www/html/otrs-es
-cp -a /tmp/royrusso-elasticsearch-HQ-eb117d4/var/www/html/otrs-es/elasticsearch-HQ
-chown -R apache:apache /var/www/html/elasticsearch-HQ
-```
 
 
