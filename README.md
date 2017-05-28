@@ -66,6 +66,10 @@ Upstart (Ubuntu < 15.10)
 * network.host: 127.0.0.1
 * http.port: 9200
 
+```
+service elasticsearch start
+```
+
 ## nginx
 
 > Nginx [...] is a web server, which can also be used as a reverse proxy, load balancer and HTTP cache. (https://en.wikipedia.org/wiki/Nginx)
@@ -359,3 +363,7 @@ location / {
 ```
 
 `sudo ln -s /etc/nginx/sites-available/tika.conf /etc/nginx/sites-enabled`
+
+```
+service nginx restart
+```
