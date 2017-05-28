@@ -1,0 +1,4 @@
+certifi==2016.9.26
+elasticsearch==5.4.0
+PyMySQL==0.7.11
+tika==1.14.1
