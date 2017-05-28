@@ -97,12 +97,13 @@ try:
 
                 parsed_dict = parser.from_buffer(faq_attachment['content'], config.TIKA_URL)
 
-                parsed_content = parsed_dict['content'].replace("-\n", "")
-                parsed_content = parsed_content.replace("\n\n", "")
-                parsed_content = parsed_content.replace("\n", " ")
+                if parsed_dict['content']:
+                    parsed_content = parsed_dict['content'].replace("-\n", "")
+                    parsed_content = parsed_content.replace("\n\n", "")
+                    parsed_content = parsed_content.replace("\n", " ")
 
-                parsed_dict.pop('content')
-                parsed_dict['content'] = parsed_content
+                    parsed_dict.pop('content')
+                    parsed_dict['content'] = parsed_content
 
                 faq_attachment_dict.update(parsed_dict)
 
