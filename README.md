@@ -8,12 +8,17 @@ non Python Software:
 * Apache Tika
 * Elasticsearch
 * nginx
+* unzip
 
 Libs (Python3)
 
 * PyMySQL
 * tika
 * elasticsearch
+
+## Install system requirements
+
+apt-get install python3 python3-pip unzip
 
 ## Install Python3 requirements
 
