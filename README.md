@@ -146,8 +146,8 @@ server {
 
     root /var/www/html/otrs-es;
 
-    access_log /var/log/nginx/otrs_es.access.log;
-    error_log /var/log/nginx/otrs_es.error.log;
+    access_log /var/log/nginx/elasticsearch.access.log;
+    error_log /var/log/nginx/elasticsearch.error.log;
 
     ssl on;
     ssl_certificate /etc/nginx/ssl/server.example.com.pem;
@@ -251,8 +251,8 @@ server {
     listen *:8443;
     server_name server.example.com;
 
-    access_log /var/log/nginx/otrs_kibana.access.log;
-    error_log /var/log/nginx/otrs_kibana.error.log;
+    access_log /var/log/nginx/kibana.access.log;
+    error_log /var/log/nginx/kibana.error.log;
 
     ssl on;
     ssl_certificate /etc/nginx/ssl/server.example.com.pem;
@@ -338,6 +338,11 @@ Copy to /opt/tika/ - Enable and Start (Systemd)
 ```
 mkdir /opt/tika
 cp tika-server-1.14.jar /opt/tika/
+```
+
+Systemd
+
+```
 systemctl daemon-reload
 systemctl enable tika.service
 systemctl start tika.service
@@ -352,8 +357,8 @@ server {
     listen *:9080;
     server_name server.example.com;
 
-    access_log /var/log/nginx/otrs_kibana.access.log;
-    error_log /var/log/nginx/otrs_kibana.error.log;
+    access_log /var/log/nginx/tika.access.log;
+    error_log /var/log/nginx/tika.error.log;
 
 location / {
         proxy_pass http://127.0.0.1:9998;
@@ -364,8 +369,8 @@ server {
     listen *:9443;
     server_name server.example.com;
 
-    access_log /var/log/nginx/otrs_tike.ssl_access.log;
-    error_log /var/log/nginx/otrs_tika.ssl_error.log;
+    access_log /var/log/nginx/tika.ssl_access.log;
+    error_log /var/log/nginx/tika.ssl_error.log;
 
     ssl on;
     ssl_certificate /etc/nginx/ssl/server.example.com.pem;
